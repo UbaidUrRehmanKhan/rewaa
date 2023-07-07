@@ -13,19 +13,16 @@ export class AppComponent implements OnInit {
   textAreaValue: any;
   hasOrder: boolean = false;
   items: any = [];
-
-  addForm: FormGroup;
-
   rows: FormArray;
 
+  taxCodes = [
+    { id: 1, name: 'No Tax' },
+    { id: 2, name: 'Value Added Tax' }
+  ]
 
   @ViewChild(NgSelectComponent) ngSelectComponent!: NgSelectComponent;
 
-  constructor(private fb: FormBuilder, private dataService: DataService, private formBuilder: FormBuilder) {
-    this.addForm = this.fb.group({
-      items: [null, Validators.required],
-      items_value: ['no', Validators.required]
-    });
+  constructor(private fb: FormBuilder, private dataService: DataService) {
     this.rows = this.fb.array([]);
   }
   ngOnInit() {
@@ -72,7 +69,7 @@ export class AppComponent implements OnInit {
       id: event.id,
       quantity: null,
       cost: null,
-      taxCode: null,
+      taxCode: 1,
       expanded: false
     });
   }

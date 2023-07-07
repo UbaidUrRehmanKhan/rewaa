@@ -53,7 +53,7 @@
                 <div>
                   <span class="bi bi-search"
                     style="position: absolute;margin-left: 6px; margin-top: 7px;color: gray;z-index: 10000;"></span>
-                  <ng-select [items]="items" (change)="onSelectChange($event)" bindValue="id"
+                  <ng-select [items]="items" (change)="onSelectChange($event)" bindValue="id" class="searchBar"
                     bindLabel="concatenatedValue" placeholder="Type Variant Name or SKU">
                   </ng-select>
                 </div>
@@ -98,10 +98,16 @@
                   [ngClass]="{ 'even': index % 2 === 1, 'borderBottom' : attachBorderBottomToRow(index, addDynamicRow?.controls) }">
                   <div class="row">
                     <div class="col-1">
-                      <i (click)="toggleItem(row)" class="fa fa-angle-right" aria-hidden="true" style="font-size: 30px;
+                      <i *ngIf="!getExpandedValue(row)" (click)="toggleItem(row)" class="fa fa-angle-right"
+                        aria-hidden="true" style="font-size: 30px;
                           color: #d2d2d2;
                           margin-left: 20px;
                           margin-top: 5px;"></i>
+                      <i *ngIf="getExpandedValue(row)" (click)="toggleItem(row)" class="fa fa-angle-down"
+                        aria-hidden="true" style="font-size: 30px;
+                        color: #d2d2d2;
+                        margin-left: 20px;
+                        margin-top: 5px;"></i>
                     </div>
                     <div class="col-3" style="padding-left: 20px;">
                       <div>
@@ -119,8 +125,9 @@
                       <input type="number" class="form-control" [formControl]="convertToFormControl(row.get('cost'))">
                     </div>
                     <div class="col-3">
-                      <input type="number" class="form-control"
+                      <ng-select [items]="taxCodes" bindValue="id" bindLabel="name" [clearable]="false"
                         [formControl]="convertToFormControl(row.get('taxCode'))">
+                      </ng-select>
                     </div>
                     <div class="col-1">
                       <i (click)="onRemoveRow(index)" class='fas fa-trash-alt' style="font-size: 30px;

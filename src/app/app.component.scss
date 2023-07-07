@@ -28,16 +28,16 @@
     text-align: right;
 }
 
-::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input {
+::ng-deep .searchBar.ng-select .ng-select-container .ng-value-container .ng-input>input {
     margin-left: 20px !important;
 }
 
-::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container,
-.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+::ng-deep .searchBar.ng-select.ng-select-single .ng-select-container .ng-value-container,
+.searchBar.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
     margin-left: 20px !important;
 }
 
-::ng-deep .ng-select .ng-arrow-wrapper {
+::ng-deep .searchBar.ng-select .ng-arrow-wrapper {
     display: none;
 }
 
