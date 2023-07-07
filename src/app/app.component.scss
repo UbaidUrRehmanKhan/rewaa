@@ -1,0 +1,51 @@
+.form-group {
+    position: relative;
+}
+
+.asterisk {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    color: red;
+}
+
+.form-control::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: gray;
+    opacity: 1;
+    /* Firefox */
+}
+
+.searchbar {
+    padding-left: 25px;
+}
+
+
+.textAreaStyling {
+    margin-bottom: 10px;
+    color: gray;
+    text-align: right;
+}
+
+::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input {
+    margin-left: 20px !important;
+}
+
+::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container,
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+    margin-left: 20px !important;
+}
+
+::ng-deep .ng-select .ng-arrow-wrapper {
+    display: none;
+}
+
+
+.even {
+    background-color: #f8f8f8;
+}
+
+.borderBottom {
+    border-bottom: 1px solid #d2d2d2;
+}
