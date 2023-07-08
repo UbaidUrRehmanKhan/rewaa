@@ -13,7 +13,10 @@ export class AppComponent implements OnInit {
   textAreaValue: any;
   hasOrder: boolean = false;
   items: any = [];
-  rows: FormArray;
+  myForm: FormGroup;
+  totalSectionExpanded: Boolean = false;
+  totalCostWithoutTax = 0;
+  totalTax = 0;
 
   taxCodes = [
     { id: 1, name: 'No Tax' },
@@ -23,7 +26,9 @@ export class AppComponent implements OnInit {
   @ViewChild(NgSelectComponent) ngSelectComponent!: NgSelectComponent;
 
   constructor(private fb: FormBuilder, private dataService: DataService) {
-    this.rows = this.fb.array([]);
+    this.myForm = new FormGroup({
+      rows: this.fb.array([])
+    });
   }
   ngOnInit() {
     const result = this.dataService.getData();
@@ -33,6 +38,39 @@ export class AppComponent implements OnInit {
       const newObject = { ...currentObject, concatenatedValue };
       this.items.push(newObject);
     }
+    this.myForm?.get('rows')?.valueChanges.subscribe((value) => {
+      this.totalCostWithoutTax = 0;
+      this.totalTax = 0;
+      for (let i = 0; i < (this.myForm?.get('rows') as FormArray).length; i++) {
+        const itemFormGroup = (this.myForm.get('rows') as FormArray).at(i) as FormGroup;
+        const cost = itemFormGroup.get('cost')?.value;
+        const quantity = itemFormGroup.get('quantity')?.value;
+        const taxCode = itemFormGroup.get('taxCode')?.value;
+        if (taxCode == 1) {
+          if (cost && quantity) {
+            const total = cost * quantity;
+            itemFormGroup.get('total')?.patchValue(total, { emitEvent: false });
+            this.totalCostWithoutTax = this.totalCostWithoutTax + itemFormGroup.get('total')?.value;
+            this.totalTax = this.totalTax - itemFormGroup.get('tax')?.value;
+            itemFormGroup.get('tax')?.setValue(0, { emitEvent: false });
+            itemFormGroup.get('totalWithTax')?.setValue(0, { emitEvent: false });
+          }
+        } else {
+          if (cost && quantity) {
+            const total = cost * quantity;
+            const tax = (15 / 100) * total;
+            const totalWithTax = total + tax;
+            itemFormGroup.get('total')?.setValue(total, { emitEvent: false });
+            this.totalCostWithoutTax = this.totalCostWithoutTax + itemFormGroup.get('total')?.value
+            itemFormGroup.get('tax')?.setValue(tax, { emitEvent: false });
+            this.totalTax = this.totalTax + itemFormGroup.get('tax')?.value;
+            itemFormGroup.get('totalWithTax')?.setValue(totalWithTax, { emitEvent: false });
+          }
+        }
+
+      }
+    });
+
   }
 
   textAreaValueLength() {
@@ -40,27 +78,31 @@ export class AppComponent implements OnInit {
   }
 
   get addDynamicRow() {
-    return this.rows as FormArray;
+    return this.myForm.get('rows') as FormArray;
   }
 
   onAddRow(event: any) {
-    this.rows.push(this.createItemFormGroup(event));
+    (this.myForm.get('rows') as FormArray).push(this.createItemFormGroup(event));
   }
 
   onRemoveRow(rowIndex: number) {
-    if (this.rows.length == 1) {
+    if ((this.myForm.get('rows') as FormArray).length == 1) {
       this.hasOrder = false;
       this.ngSelectComponent.clearModel()
     }
-    this.rows.removeAt(rowIndex);
+    (this.myForm.get('rows') as FormArray).removeAt(rowIndex);
   }
 
   toggleItem(item: any) {
     item.controls.expanded.value = !item.controls.expanded.value;
   }
 
-  attachBorderBottomToRow(index: any, rows: any) {
-    return index != rows.length - 1;
+  toggleTotalSection() {
+    this.totalSectionExpanded = !this.totalSectionExpanded;
+  }
+
+  attachBorderBottomToRow(index: any, rowsLength: any) {
+    return index != rowsLength - 1;
   }
 
   createItemFormGroup(event: any): FormGroup {
@@ -70,7 +112,10 @@ export class AppComponent implements OnInit {
       quantity: null,
       cost: null,
       taxCode: 1,
-      expanded: false
+      expanded: false,
+      tax: 0,
+      totalWithTax: 0,
+      total: 0,
     });
   }
 
@@ -79,8 +124,24 @@ export class AppComponent implements OnInit {
     return ctrl;
   }
 
-  getExpandedValue(row: any) {
+  getRowExpandedValue(row: any) {
     return row.controls.expanded.value;
+  }
+
+  rowTotalDetails(row: any) {
+    return row.controls.total.value;
+  }
+
+  rowTotalWithTaxDetails(row: any) {
+    return row.controls.totalWithTax.value ? row.controls.totalWithTax.value : row.controls.total.value;
+  }
+
+  rowTaxDetails(row: any) {
+    return row.controls.tax.value;
+  }
+
+  rowItemsQuanity(row: any) {
+    return row.controls.quantity.value ? row.controls.quantity.value : 0;
   }
 
 

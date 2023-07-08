@@ -95,15 +95,15 @@
 
 
                 <div *ngFor="let row of addDynamicRow?.controls; let index = index;" style="padding-top: 5px;"
-                  [ngClass]="{ 'even': index % 2 === 1, 'borderBottom' : attachBorderBottomToRow(index, addDynamicRow?.controls) }">
+                  [ngClass]="{ 'even': index % 2 === 1, 'borderBottom' : attachBorderBottomToRow(index, addDynamicRow.controls.length) }">
                   <div class="row">
                     <div class="col-1">
-                      <i *ngIf="!getExpandedValue(row)" (click)="toggleItem(row)" class="fa fa-angle-right"
+                      <i *ngIf="!getRowExpandedValue(row)" (click)="toggleItem(row)" class="fa fa-angle-right"
                         aria-hidden="true" style="font-size: 30px;
                           color: #d2d2d2;
                           margin-left: 20px;
                           margin-top: 5px;"></i>
-                      <i *ngIf="getExpandedValue(row)" (click)="toggleItem(row)" class="fa fa-angle-down"
+                      <i *ngIf="getRowExpandedValue(row)" (click)="toggleItem(row)" class="fa fa-angle-down"
                         aria-hidden="true" style="font-size: 30px;
                         color: #d2d2d2;
                         margin-left: 20px;
@@ -113,7 +113,7 @@
                       <div>
                         {{row.get('name')?.value}}
                       </div>
-                      <div style="color: gray; font-size: 14px;">
+                      <div class="subHeading">
                         {{row.get('id')?.value}}
                       </div>
                     </div>
@@ -136,10 +136,101 @@
                       color: gray;"></i>
                     </div>
                   </div>
-                  <div *ngIf="getExpandedValue(row)">
-                    expanded
+                  <div *ngIf="getRowExpandedValue(row)" class="mt-2">
+                    <div class="row">
+                      <div class="col-md-4"></div>
+                      <div class="col-md-3">
+                        <div class="subHeading">Available Qty</div>
+                        <div class="subHeading">(Available in stock)</div>
+                        <div>0</div>
+                      </div>
+                      <div class="col-md-1"></div>
+                      <div class="col-md-4">
+                        <div class="subHeading">Total Cost</div>
+                        <div class="subHeading">(Tax exclusive)</div>
+                        <div>{{rowTotalDetails(row)}}</div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4"></div>
+                      <div class="col-md-3">
+                        <div class="subHeading">Expected Qty</div>
+                        <div class="subHeading">(Total will be available)</div>
+                        <div>{{rowItemsQuanity(row)}}</div>
+                      </div>
+                      <div class="col-md-1"></div>
+                      <div class="col-md-4">
+                        <div class="subHeading">Tax Amount</div>
+                        <div>{{rowTaxDetails(row)}}</div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4"></div>
+                      <div class="col-md-3">
+                        <div class="subHeading">Last Buy Price</div>
+                        <div>0</div>
+                      </div>
+                      <div class="col-md-1"></div>
+                      <div class="col-md-4">
+                        <div class="subHeading">Total Cost</div>
+                        <div class="subHeading">(Tax inclusive)</div>
+                        <div>{{rowTotalWithTaxDetails(row)}}</div>
+                      </div>
+                    </div>
                   </div>
 
+                </div>
+                <div *ngIf="!totalSectionExpanded" class="lightGrayTopBorder"
+                  style="padding-top: 10px; padding-bottom: 5px;">
+                  <div class="row">
+                    <div class="col-1">
+                      <i (click)="toggleTotalSection()" class="fa fa-angle-right" aria-hidden="true" style="font-size: 30px;
+                        color: #d2d2d2;
+                        margin-left: 20px;"></i>
+                    </div>
+                    <div class=" col-5" style="padding-left: 20px;margin-top: 2px;">
+                      Total (Tax Inclusive)
+                    </div>
+                    <div class="col-6">
+                      {{totalCostWithoutTax + totalTax}}
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="totalSectionExpanded" class="lightGrayTopBorder"
+                  style="padding-top: 10px; padding-bottom: 5px;">
+                  <div class="row">
+                    <div class="col-1">
+                      <i (click)="toggleTotalSection()" class="fa fa-angle-down" aria-hidden="true" style="font-size: 30px;
+                        color: #d2d2d2;
+                        margin-left: 20px;"></i>
+                    </div>
+                    <div class=" col-5" style="padding-left: 20px;margin-top: 2px;">
+                      Sub Total (Tax Exclusive)
+                    </div>
+                    <div class="col-6">
+                      {{totalCostWithoutTax}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-1">
+                    </div>
+                    <div class=" col-5" style="padding-left: 20px;margin-top: 2px;">
+                      Total Tax
+                    </div>
+                    <div class="col-6">
+                      + {{totalTax}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-1">
+                    </div>
+                    <div class="col-5 lightGrayTopBorder" style="padding-left: 20px;">
+                      Total (Tax Inclusive)
+                    </div>
+                    <div class="col-4 lightGrayTopBorder">
+                      {{totalCostWithoutTax + totalTax}}
+                    </div>
+                  </div>
                 </div>
 
 
