@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgbAlertModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -23,6 +24,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     ReactiveFormsModule,
     FontAwesomeModule,
     NgxDatatableModule,
+    NgbAlertModule,
+    NgbDatepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

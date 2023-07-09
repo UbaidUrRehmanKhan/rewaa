@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from './services/data.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray, NgForm, AbstractControl } from '@angular/forms'
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray, NgForm, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   title = 'rewaa-assignment';
@@ -17,17 +17,30 @@ export class AppComponent implements OnInit {
   totalSectionExpanded: Boolean = false;
   totalCostWithoutTax = 0;
   totalTax = 0;
+  paymentTime = 'payNow';
 
   taxCodes = [
     { id: 1, name: 'No Tax' },
     { id: 2, name: 'Value Added Tax' }
   ]
 
+  paymentMethods = [
+    { id: 1, name: 'Cash' },
+    { id: 2, name: 'Credit Card' }
+  ]
+
   @ViewChild(NgSelectComponent) ngSelectComponent!: NgSelectComponent;
 
   constructor(private fb: FormBuilder, private dataService: DataService) {
     this.myForm = new FormGroup({
-      rows: this.fb.array([])
+      rows: this.fb.array([]),
+      supplierName: new FormControl(null, Validators.required),
+      supplierLocation: new FormControl(null, Validators.required),
+      supplierInvoice: new FormControl(null),
+      notes: new FormControl(null),
+      amountPaid: new FormControl(null, Validators.required),
+      paymentMethod: new FormControl(null, Validators.required),
+      paymentDueDate: new FormControl(null)
     });
   }
   ngOnInit() {
@@ -109,8 +122,8 @@ export class AppComponent implements OnInit {
     return this.fb.group({
       name: event.name,
       id: event.id,
-      quantity: null,
-      cost: null,
+      quantity: ['', Validators.required],
+      cost: ['', Validators.required],
       taxCode: 1,
       expanded: false,
       tax: 0,
@@ -144,15 +157,37 @@ export class AppComponent implements OnInit {
     return row.controls.quantity.value ? row.controls.quantity.value : 0;
   }
 
+  resetForm() {
+    this.hasOrder == false;
+    this.totalCostWithoutTax = 0;
+    this.totalTax = 0;
+    this.ngSelectComponent.clearModel();
+    const itemsFormArray = this.myForm.get('rows') as FormArray;
+    itemsFormArray.clear();
+    this.myForm.reset();
+  }
+
+  handleRadioClick(value: any) {
+    if (value == 'payNow') {
+      this.myForm.get('amountPaid')?.setValidators([Validators.required]);
+      this.myForm.get('amountPaid')?.updateValueAndValidity();
+      this.myForm.get('paymentMethod')?.setValidators([Validators.required]);
+      this.myForm.get('paymentMethod')?.updateValueAndValidity();
+    } else {
+      this.myForm.get('amountPaid')?.clearValidators();
+      this.myForm.get('amountPaid')?.updateValueAndValidity();
+      this.myForm.get('paymentMethod')?.clearValidators();
+      this.myForm.get('paymentMethod')?.updateValueAndValidity();
+
+    }
+    this.paymentTime = value;
+  }
+
 
   onSelectChange(event: any) {
     if (event) {
-      console.log(event)
       this.hasOrder = true;
       this.onAddRow(event);
     }
-
-    // this.ngSelectComponent.clearModel();
-    // add new form group row
   }
 }

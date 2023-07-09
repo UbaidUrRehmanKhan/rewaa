@@ -1,5 +1,5 @@
 <div style="background-color: #f8f8f8;">
-  <div style="margin-right: 150px; margin-left: 150px;padding-top: 20px; height: 100vh;">
+  <div [formGroup]="myForm" style="margin-right: 150px; margin-left: 150px;padding-top: 20px; height: 100vh;">
     <div class=" row">
       <!-- Basic Form starts -->
       <div class="col-lg-4 col-12">
@@ -12,18 +12,21 @@
                   <div class="col-12">
                     <div class="form-group mb-4 mt-3">
                       <span class="asterisk">*</span>
-                      <input type="text" class="form-control" placeholder="Supplier Name">
+                      <input type="text" class="form-control" placeholder="Supplier Name"
+                        [formControl]="convertToFormControl(this.myForm.get('supplierName'))">
                     </div>
                   </div>
                   <div class="col-12">
                     <div class="form-group mb-4">
                       <span class="asterisk">*</span>
-                      <input type="text" class="form-control" placeholder="Location">
+                      <input type="text" class="form-control" placeholder="Location"
+                        [formControl]="convertToFormControl(this.myForm.get('supplierLocation'))">
                     </div>
                   </div>
                   <div class="col-12">
                     <div class="form-group mb-4">
-                      <input type="number" class="form-control" placeholder="Supplier Invoice Number">
+                      <input type="number" class="form-control" placeholder="Supplier Invoice Number"
+                        [formControl]="convertToFormControl(this.myForm.get('supplierInvoice'))">
                     </div>
                   </div>
                 </div>
@@ -59,7 +62,7 @@
                 </div>
 
               </div>
-              <div *ngIf="!hasOrder" class="col-12" style="    text-align: center;
+              <div *ngIf="!hasOrder" class="col-12" style="text-align: center;
               margin: 50px 0px 10px 0px;">
                 <img src="../assets/searchIcon.png" />
                 <div style="color: gray; font-size: 14px;">Search for products that you would like to use in your
@@ -92,8 +95,6 @@
                   </div>
                   <div class="col-1"></div>
                 </div>
-
-
                 <div *ngFor="let row of addDynamicRow?.controls; let index = index;" style="padding-top: 5px;"
                   [ngClass]="{ 'even': index % 2 === 1, 'borderBottom' : attachBorderBottomToRow(index, addDynamicRow.controls.length) }">
                   <div class="row">
@@ -232,8 +233,63 @@
                     </div>
                   </div>
                 </div>
+                <div style="background-color: #f8f8f8; border-top: 1px solid #d2d2d2;">
+                  <div class="row p-t-20 p-b-20 font-weight-500 ">
+                    <div class="col-1">
+                    </div>
+                    <div class="col-6">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input custom-radio" type="radio" name="inlineRadioOptions"
+                          [ngModelOptions]="{standalone: true}" value="payNow" [(ngModel)]="paymentTime"
+                          (click)="handleRadioClick('payNow')">
+                        Pay Now
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input custom-radio" [(ngModel)]="paymentTime" type="radio"
+                          [ngModelOptions]="{standalone: true}" name="inlineRadioOptions" value="payLater"
+                          (click)="handleRadioClick('payLater')">
+                        Pay Later
+                      </div>
 
-
+                    </div>
+                  </div>
+                  <div class="row p-b-20" *ngIf="paymentTime == 'payNow'">
+                    <div class="col-1"></div>
+                    <div class="col-4 gray-color">Payment Method</div>
+                    <div class="col-4">
+                      <ng-select [items]="paymentMethods" bindValue="id" bindLabel="name" placeholder="Select a Method"
+                        [clearable]="false" [formControl]="convertToFormControl(this.myForm.get('paymentMethod'))">
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="row p-b-20" *ngIf="paymentTime == 'payNow'">
+                    <div class="col-1"></div>
+                    <div class="col-4 gray-color">Paid Amount</div>
+                    <div class="col-4">
+                      <input type="number" class="form-control" placeholder="0.00"
+                        [formControl]="convertToFormControl(this.myForm.get('amountPaid'))">
+                    </div>
+                  </div>
+                  <div class="row p-b-20">
+                    <div class="col-1"></div>
+                    <div class="col-4 gray-color">Credit Amount</div>
+                    <div class="col-4 creditAmountStyle">
+                      {{totalCostWithoutTax + totalTax}}
+                    </div>
+                  </div>
+                  <div class="row p-b-20">
+                    <div class="col-1"></div>
+                    <div class="col-4 gray-color">Payment Due Date</div>
+                    <div class="col-4">
+                      <div class="input-group">
+                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker"
+                          [formControl]="convertToFormControl(this.myForm.get('paymentDueDate'))" />
+                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"
+                          type="button"></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -241,5 +297,12 @@
       </div>
       <!-- Hidden Label ends -->
     </div>
+  </div>
+  <div class=" footer">
+    <span class="mr-15 pointer-cursor" style="color:gray;" (click)="resetForm()">Cancel</span>
+    <button type="button" class="btn btn-outline-success p-50 mr-15">Save as
+      Draft</button>
+    <button type="button" class="btn btn-success p-50" [disabled]="myForm.valid == false">Complete
+      Order</button>
   </div>
 </div>

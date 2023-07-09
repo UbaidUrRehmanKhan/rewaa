@@ -58,3 +58,55 @@
 .lightGrayTopBorder {
     border-top: 1px solid #d2d2d2;
 }
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    height: 80px;
+    color: white;
+    text-align: right;
+    padding: 20px;
+}
+
+.p-50 {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.mr-15 {
+    margin-right: 15px;
+}
+
+.pointer-cursor {
+    cursor: pointer;
+}
+
+.p-t-20 {
+    padding-top: 20px;
+}
+
+.p-b-20 {
+    padding-bottom: 20px;
+}
+
+.font-weight-500 {
+    font-weight: 500;
+}
+
+.form-check-input:checked {
+    background-color: #1b8654;
+    border-color: #1b8654;
+}
+
+.gray-color {
+    color: gray;
+}
+
+.creditAmountStyle {
+    text-align: right;
+    font-weight: 500;
+    color: #d15d56;
+}
