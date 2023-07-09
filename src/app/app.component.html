@@ -52,8 +52,8 @@
               <div class="col-6">
                 <div>
                   <span class="bi bi-search searchBarIcon"></span>
-                  <ng-select [items]="items" (change)="onSelectChange($event)" bindValue="id" class="searchBar"
-                    bindLabel="concatenatedValue" placeholder="Type Variant Name or SKU">
+                  <ng-select (change)="onSelectChange($event)" class="searchBar" placeholder="Type Variant Name or SKU">
+                    <ng-option [value]="item" *ngFor="let item of itemsArray"> {{item.concatenatedValue}}</ng-option>
                   </ng-select>
                 </div>
 

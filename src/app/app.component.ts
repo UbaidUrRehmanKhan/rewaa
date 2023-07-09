@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { DataService } from './services/data.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray, NgForm, AbstractControl } from '@angular/forms';
@@ -9,11 +9,11 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'rewaa-assignment';
   textAreaValue: any;
   hasOrder: boolean = false;
-  items: any = [];
+  itemsArray: any = [];
   myForm: FormGroup;
   totalSectionExpanded: Boolean = false;
   totalCostWithoutTax = 0;
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
 
   @ViewChild(NgSelectComponent) ngSelectComponent!: NgSelectComponent;
 
-  constructor(private fb: FormBuilder, private dataService: DataService, private toastr: ToastrService) {
+  constructor(private fb: FormBuilder, private dataService: DataService, private toastr: ToastrService, private cdRef: ChangeDetectorRef) {
     this.myForm = new FormGroup({
       rows: this.fb.array([]),
       supplierName: new FormControl(null, Validators.required),
@@ -43,15 +43,25 @@ export class AppComponent implements OnInit {
       paymentMethod: new FormControl(null, Validators.required),
       paymentDueDate: new FormControl(null)
     });
+
+
+  }
+  ngAfterViewInit(): void {
+
   }
   ngOnInit() {
-    const result = this.dataService.getData();
-    for (let i = 0; i < result.length; i++) {
-      const currentObject = result[i];
-      const concatenatedValue = currentObject.id + ' ' + currentObject.name;
-      const newObject = { ...currentObject, concatenatedValue };
-      this.items.push(newObject);
-    }
+    this.dataService.getItems()
+      .subscribe(data => {
+        const result = data;
+        for (let i = 0; i < result.length; i++) {
+          const currentObject = result[i];
+          const concatenatedValue = currentObject.id + ' ' + currentObject.name;
+          const newObject = { ...currentObject, concatenatedValue };
+          this.itemsArray.push(newObject);
+        }
+        this.cdRef.detectChanges();
+        console.log(this.itemsArray)
+      });
     this.myForm?.get('rows')?.valueChanges.subscribe((value) => {
       this.totalCostWithoutTax = 0;
       this.totalTax = 0;
@@ -120,6 +130,7 @@ export class AppComponent implements OnInit {
   }
 
   createItemFormGroup(event: any): FormGroup {
+    debugger
     return this.fb.group({
       name: event.name,
       id: event.id,
