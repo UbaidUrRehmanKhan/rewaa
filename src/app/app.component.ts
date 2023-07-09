@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { DataService } from './services/data.service';
+import { DataService } from './data.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray, NgForm, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
