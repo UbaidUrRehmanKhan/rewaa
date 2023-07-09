@@ -51,63 +51,46 @@
               </p>
               <div class="col-6">
                 <div>
-                  <span class="bi bi-search"
-                    style="position: absolute;margin-left: 6px; margin-top: 7px;color: gray;z-index: 10000;"></span>
+                  <span class="bi bi-search searchBarIcon"></span>
                   <ng-select [items]="items" (change)="onSelectChange($event)" bindValue="id" class="searchBar"
                     bindLabel="concatenatedValue" placeholder="Type Variant Name or SKU">
                   </ng-select>
                 </div>
 
               </div>
-              <div *ngIf="!hasOrder" class="col-12" style="text-align: center;
-              margin: 50px 0px 10px 0px;">
+              <div *ngIf="!hasOrder" class="col-12 no-order-alignment">
                 <img src="../assets/searchIcon.png" />
                 <div class="content-text">Search for products that you would like to use in your
                   purchase order.</div>
               </div>
-              <div *ngIf="hasOrder" style="border: 1px solid #d2d2d2; margin-top: 20px;">
-                <div class="row"
-                  style="border-bottom: 1px solid #d2d2d2;margin-left: 0px; margin-right: 0px;  background-color: #f8f8f8;">
+              <div *ngIf="hasOrder" class="orderMainBox">
+                <div class="row orderHeaderRow">
                   <div class="col-1"></div>
-                  <div class="col-3" style="padding: 10px;
-                  font-size: 18px;
-                  font-weight: 500;">
+                  <div class="col-3 orderHeaderColumn">
                     <span>Product Name/SKU</span>
                   </div>
-                  <div class="col-2" style="padding: 10px;
-                  font-size: 18px;
-                  font-weight: 500">
+                  <div class="col-2 orderHeaderColumn">
                     <span>New QTY</span>
                   </div>
-                  <div class="col-2" style="padding: 10px;
-                  font-size: 18px;
-                  font-weight: 500">
-                    <span>New Cost</span><span style="font-weight: 400;font-size: 14px;color: #706767;"> (Tax
+                  <div class="col-2 orderHeaderColumn">
+                    <span>New Cost</span><span class="orderHeaderSubText"> (Tax
                       Exclusive)</span>
                   </div>
-                  <div class="col-3" style="padding: 10px;
-                  font-size: 18px;
-                  font-weight: 500">
+                  <div class="col-3 orderHeaderColumn">
                     <span>Tax Code</span>
                   </div>
                   <div class="col-1"></div>
                 </div>
-                <div *ngFor="let row of addDynamicRow?.controls; let index = index;" style="padding-top: 5px;"
+                <div *ngFor="let row of addDynamicRow?.controls; let index = index;" class="p-t-5"
                   [ngClass]="{ 'even': index % 2 === 1, 'borderBottom' : attachBorderBottomToRow(index, addDynamicRow.controls.length) }">
                   <div class="row">
                     <div class="col-1">
-                      <i *ngIf="!getRowExpandedValue(row)" (click)="toggleItem(row)" class="fa fa-angle-right"
-                        aria-hidden="true" style="font-size: 30px;
-                          color: #d2d2d2;
-                          margin-left: 20px;
-                          margin-top: 5px;"></i>
-                      <i *ngIf="getRowExpandedValue(row)" (click)="toggleItem(row)" class="fa fa-angle-down"
-                        aria-hidden="true" style="font-size: 30px;
-                        color: #d2d2d2;
-                        margin-left: 20px;
-                        margin-top: 5px;"></i>
+                      <i *ngIf="!getRowExpandedValue(row)" (click)="toggleItem(row)"
+                        class="fa fa-angle-right toggleIcon" aria-hidden="true"></i>
+                      <i *ngIf="getRowExpandedValue(row)" (click)="toggleItem(row)" class="fa fa-angle-down toggleIcon"
+                        aria-hidden="true"></i>
                     </div>
-                    <div class="col-3" style="padding-left: 20px;">
+                    <div class="col-3 pl-20">
                       <div>
                         {{row.get('name')?.value}}
                       </div>
@@ -128,10 +111,7 @@
                       </ng-select>
                     </div>
                     <div class="col-1">
-                      <i (click)="onRemoveRow(index)" class='fas fa-trash-alt' style="font-size: 30px;
-                      font-weight: 300;
-                      margin-top: 5%;
-                      color: gray;"></i>
+                      <i (click)="onRemoveRow(index)" class='fas fa-trash-alt deleteRowClass'></i>
                     </div>
                   </div>
                   <div *ngIf="getRowExpandedValue(row)" class="mt-2">
@@ -178,15 +158,13 @@
                   </div>
 
                 </div>
-                <div *ngIf="!totalSectionExpanded" class="lightGrayTopBorder"
-                  style="padding-top: 10px; padding-bottom: 5px;">
+                <div *ngIf="!totalSectionExpanded" class="lightGrayTopBorder totalSectionPadding">
                   <div class="row">
                     <div class="col-1">
-                      <i (click)="toggleTotalSection()" class="fa fa-angle-right" aria-hidden="true" style="font-size: 30px;
-                        color: #d2d2d2;
-                        margin-left: 20px;"></i>
+                      <i (click)="toggleTotalSection()" class="fa fa-angle-right totalToggleIcon"
+                        aria-hidden="true"></i>
                     </div>
-                    <div class=" col-5" style="padding-left: 20px;margin-top: 2px;">
+                    <div class=" col-5 totalSectionHeading">
                       Total (Tax Inclusive)
                     </div>
                     <div class="col-6">
@@ -194,15 +172,13 @@
                     </div>
                   </div>
                 </div>
-                <div *ngIf="totalSectionExpanded" class="lightGrayTopBorder"
-                  style="padding-top: 10px; padding-bottom: 5px;">
+                <div *ngIf="totalSectionExpanded" class="lightGrayTopBorder expandedDivStyles">
                   <div class="row">
                     <div class="col-1">
-                      <i (click)="toggleTotalSection()" class="fa fa-angle-down" aria-hidden="true" style="font-size: 30px;
-                        color: #d2d2d2;
-                        margin-left: 20px;"></i>
+                      <i (click)="toggleTotalSection()" class="fa fa-angle-down totalSectionExpandedIcon"
+                        aria-hidden="true"></i>
                     </div>
-                    <div class=" col-5" style="padding-left: 20px;margin-top: 2px;">
+                    <div class=" col-5 totalSectionHeading">
                       Sub Total (Tax Exclusive)
                     </div>
                     <div class="col-6">
@@ -212,7 +188,7 @@
                   <div class="row">
                     <div class="col-1">
                     </div>
-                    <div class=" col-5" style="padding-left: 20px;margin-top: 2px;">
+                    <div class="totalSectionHeading col-5">
                       Total Tax
                     </div>
                     <div class="col-6">
@@ -222,7 +198,7 @@
                   <div class="row">
                     <div class="col-1">
                     </div>
-                    <div class="col-5 lightGrayTopBorder" style="padding-left: 20px;">
+                    <div class="col-5 lightGrayTopBorder pl-20">
                       Total (Tax Inclusive)
                     </div>
                     <div class="col-4 lightGrayTopBorder">
@@ -230,7 +206,7 @@
                     </div>
                   </div>
                 </div>
-                <div style="background-color: #f8f8f8; border-top: 1px solid #d2d2d2;">
+                <div class="paymentDiv">
                   <div class="row p-t-20 p-b-20 font-weight-500 ">
                     <div class="col-1">
                     </div>
@@ -296,7 +272,7 @@
     </div>
   </div>
   <div class=" footer">
-    <span class="mr-15 pointer-cursor" style="color:gray;" (click)="resetForm()">Cancel</span>
+    <span class="mr-15 pointer-cursor gray-background" (click)="resetForm()">Cancel</span>
     <button type="button" class="btn btn-outline-success p-50 mr-15">Save as
       Draft</button>
     <button type="button" class="btn btn-success p-50" [disabled]="myForm.valid == false">Complete
