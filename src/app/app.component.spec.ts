@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormGroup, FormArray, FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
 import { provideToastr } from 'ngx-toastr';
 import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -11,7 +12,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent],
-      imports: [ReactiveFormsModule, FormsModule, NgSelectModule],
+      imports: [ReactiveFormsModule, FormsModule, NgSelectModule, HttpClientModule],
       providers: [
         provideToastr()
       ]
