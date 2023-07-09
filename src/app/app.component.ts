@@ -195,5 +195,6 @@ export class AppComponent implements OnInit {
   formSubmit() {
     console.log(this.myForm.value)
     this.toastr.success('Success', 'Data is saved successfully.');
+    console.log('Form array submitted successfully')
   }
 }
