@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { DataService } from './data.service';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { DataService } from './services/data.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray, NgForm, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   title = 'rewaa-assignment';
   textAreaValue: any;
   hasOrder: boolean = false;
@@ -46,21 +46,11 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
   }
-  ngAfterViewInit(): void {
 
-  }
   ngOnInit() {
     this.dataService.getItems()
-      .subscribe(data => {
-        const result = data;
-        for (let i = 0; i < result.length; i++) {
-          const currentObject = result[i];
-          const concatenatedValue = currentObject.id + ' ' + currentObject.name;
-          const newObject = { ...currentObject, concatenatedValue };
-          this.itemsArray.push(newObject);
-        }
-        this.cdRef.detectChanges();
-        console.log(this.itemsArray)
+      .subscribe((data: any) => {
+        this.itemsArray = [...data];
       });
     this.myForm?.get('rows')?.valueChanges.subscribe((value) => {
       this.totalCostWithoutTax = 0;
@@ -75,7 +65,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             const total = cost * quantity;
             itemFormGroup.get('total')?.patchValue(total, { emitEvent: false });
             this.totalCostWithoutTax = this.totalCostWithoutTax + itemFormGroup.get('total')?.value;
-            this.totalTax = this.totalTax - itemFormGroup.get('tax')?.value;
+            this.totalTax = 0;
             itemFormGroup.get('tax')?.setValue(0, { emitEvent: false });
             itemFormGroup.get('totalWithTax')?.setValue(0, { emitEvent: false });
           }
@@ -130,7 +120,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   createItemFormGroup(event: any): FormGroup {
-    debugger
     return this.fb.group({
       name: event.name,
       id: event.id,
