@@ -1,6 +1,6 @@
 # RewaaAssignment
 
-## Development server
+## Packages/Dependencies Installation 
 
 Install node modules by running `npm install`
 
