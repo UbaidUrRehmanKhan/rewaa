@@ -17,3 +17,8 @@ hosted by json-server
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 Simple test cases are added to run the basic flow. 
+
+## User Interface Breakpoint
+
+UI is being displayed properly on 1280 and above screen sizes. 
+Proper scroll is added in right order items pane, so that footer should not be override.
