@@ -1,7 +1,6 @@
-<div style="background-color: #f8f8f8;">
-  <div [formGroup]="myForm" style="margin-right: 150px; margin-left: 150px;padding-top: 20px; height: 100vh;">
+<div class="lightBackgroud">
+  <div [formGroup]="myForm" class="contentStyle">
     <div class=" row">
-      <!-- Basic Form starts -->
       <div class="col-lg-4 col-12">
         <div class="card">
           <div class="card-content">
@@ -40,14 +39,12 @@
           </div>
         </div>
       </div>
-      <!-- Basic Form ends -->
-      <!-- Hidden Label starts -->
       <div class="col-lg-8 col-12">
-        <div class="card">
+        <div class="card card-fixed-height">
           <div class="card-content">
             <div class="card-body">
               <h4 class="card-title mt-3">Products</h4>
-              <p style="color: gray; font-size: 14px;">
+              <p class="content-text">
                 <span class="bi bi-exclamation-circle"></span>
                 Products Qty, the average product cost and the latest buying price are updated after completing the
                 purchased order.
@@ -65,7 +62,7 @@
               <div *ngIf="!hasOrder" class="col-12" style="text-align: center;
               margin: 50px 0px 10px 0px;">
                 <img src="../assets/searchIcon.png" />
-                <div style="color: gray; font-size: 14px;">Search for products that you would like to use in your
+                <div class="content-text">Search for products that you would like to use in your
                   purchase order.</div>
               </div>
               <div *ngIf="hasOrder" style="border: 1px solid #d2d2d2; margin-top: 20px;">

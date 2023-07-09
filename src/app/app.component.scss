@@ -41,9 +41,29 @@
     display: none;
 }
 
+.card-fixed-height {
+    overflow: scroll;
+    height: 80vh;
+}
+
+.contentStyle {
+    margin-right: 150px;
+    margin-left: 150px;
+    padding-top: 20px;
+    height: 100vh;
+}
 
 .even {
     background-color: #f8f8f8;
+}
+
+.lightBackgroud {
+    background-color: #f8f8f8;
+}
+
+.content-text {
+    color: gray;
+    font-size: 14px;
 }
 
 .borderBottom {
