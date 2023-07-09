@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from './services/data.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray, NgForm, AbstractControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,7 @@ export class AppComponent implements OnInit {
 
   @ViewChild(NgSelectComponent) ngSelectComponent!: NgSelectComponent;
 
-  constructor(private fb: FormBuilder, private dataService: DataService) {
+  constructor(private fb: FormBuilder, private dataService: DataService, private toastr: ToastrService) {
     this.myForm = new FormGroup({
       rows: this.fb.array([]),
       supplierName: new FormControl(null, Validators.required),
@@ -189,5 +190,10 @@ export class AppComponent implements OnInit {
       this.hasOrder = true;
       this.onAddRow(event);
     }
+  }
+
+  formSubmit() {
+    console.log(this.myForm.value)
+    this.toastr.success('Success', 'Data is saved successfully.');
   }
 }

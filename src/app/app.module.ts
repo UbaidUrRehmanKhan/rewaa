@@ -9,6 +9,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgbAlertModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrModule } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
 
 
 @NgModule({
@@ -25,9 +28,13 @@ import { NgbAlertModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap'
     FontAwesomeModule,
     NgxDatatableModule,
     NgbAlertModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    provideAnimations(),
+    provideToastr(),
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

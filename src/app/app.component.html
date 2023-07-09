@@ -272,10 +272,11 @@
     </div>
   </div>
   <div class=" footer">
-    <span class="mr-15 pointer-cursor gray-background" (click)="resetForm()">Cancel</span>
+    <span class="mr-15 pointer-cursor gray-color" (click)="resetForm()">Cancel</span>
     <button type="button" class="btn btn-outline-success p-50 mr-15">Save as
       Draft</button>
-    <button type="button" class="btn btn-success p-50" [disabled]="myForm.valid == false">Complete
+    <button type="button" class="btn btn-success p-50" (click)="formSubmit()"
+      [disabled]="myForm.valid == false">Complete
       Order</button>
   </div>
 </div>
